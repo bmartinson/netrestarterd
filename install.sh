@@ -1,10 +1,15 @@
 #!/bin/bash
 
+STARTING_DIR=$(pwd)
+SCRIPT_DIR=$(dirname "$0")
+
 # Exit if not running as sudo
 if [[ $EUID -ne 0 ]]; then
   echo "This script must be run as root. Please run with sudo."
   exit 1
 fi
+
+cd "$SCRIPT_DIR"
 
 echo "Compiling and installing netrestarterd for execution..."
 
@@ -21,7 +26,7 @@ if [ -f /Library/LaunchDaemons/com.bmartinson.netrestarterd.plist ]; then
 fi
 
 # Compile the binary
-clang -o /usr/local/bin/netrestarterd netrestarterd.c \
+clang -o /usr/local/bin/netrestarterd ./src/netrestarterd.c \
   -framework SystemConfiguration \
   -framework CoreFoundation
 
@@ -31,8 +36,10 @@ chown root:wheel /usr/local/bin/netrestarterd
 echo "  /usr/local/bin/netrestarterd installed."
 
 # Copy plist and change owner
-cp com.bmartinson.netrestarterd.plist /Library/LaunchDaemons/com.bmartinson.netrestarterd.plist
+cp ./src/com.bmartinson.netrestarterd.plist /Library/LaunchDaemons/com.bmartinson.netrestarterd.plist
 chown root:wheel /Library/LaunchDaemons/com.bmartinson.netrestarterd.plist
+
+cd "$STARTING_DIR"
 
 echo "  netrestarterd is configured for startup."
 
