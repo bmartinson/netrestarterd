@@ -8,14 +8,24 @@ When using a work VPN, whenever an employee would put their computer to sleep wh
 All you need to install, uninstall, manually start/stop, or debug the tool can be driven off of the provided bash scripts. The binary will be compiled and installed using the `install.sh` script as will the appropriate plist files to setup the launch daemon.
 
 ```sh
-# compile the source code, install the binary, configure the daemon, and execute it
+# compile the source code, install the binary, configure the daemon
 sudo ./install.sh
+
+# if the daemon isn't running yet, start it up!
+sudo ./start.sh
+
+# want to kill the daemon?
+sudo ./stop.sh
 
 # get rid of everything
 sudo ./uninstall.sh
 
 # uninstall any existing installs and re-compile and run interactively
 sudo ./debug.sh
+
+# want to debug a previously compiled version without unisntalling
+sudo ./stop.sh # kill off any running daemons
+/usr/local/bin/netrestarterd --debug
 ```
 
 Hope this helps! :)
