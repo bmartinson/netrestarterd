@@ -13,7 +13,13 @@
 #define CHECK_INTERVAL_SEC  10
 #define PIDFILE "/var/run/netrestarterd.pid"
 
-// Returns true if we can reach the Internet (e.g., 8.8.8.8)
+// Stores the last known DNS server addresses
+static char *last_resolv_conf = NULL;
+static size_t last_resolv_conf_len = 0;
+
+/**
+ * Returns true if we can reach the Internet (e.g., 8.8.8.8)
+ */
 int isInternetReachable() {
   SCNetworkReachabilityRef ref = SCNetworkReachabilityCreateWithName(NULL, "8.8.8.8");
   if (!ref) return 0;
@@ -27,11 +33,9 @@ int isInternetReachable() {
     !(flags & kSCNetworkFlagsConnectionRequired);
 }
 
-// Stores the last known DNS server addresses
-static char *last_resolv_conf = NULL;
-  static size_t last_resolv_conf_len = 0;
-
-// Returns 1 if DNS servers have changed since last call, 0 otherwise
+/**
+ * Returns 1 if DNS servers have changed since last call, 0 otherwise
+ */
 int hasDNSChanged() {
   FILE *fp = fopen("/etc/resolv.conf", "r");
   if (!fp) return 0;
@@ -140,6 +144,7 @@ void reap_child(int sig) {
 
 int check_and_write_pidfile() {
   int fd = open(PIDFILE, O_RDWR | O_CREAT, 0644);
+
   if (fd < 0) {
     perror("open pidfile");
     return 1;
@@ -148,11 +153,13 @@ int check_and_write_pidfile() {
     close(fd);
     return 1; // Another instance is running
   }
+
   // Write our PID
   char buf[32];
   snprintf(buf, sizeof(buf), "%d\n", getpid());
   ftruncate(fd, 0);
   write(fd, buf, strlen(buf));
+
   // Keep fd open to hold lock
   return 0;
 }
