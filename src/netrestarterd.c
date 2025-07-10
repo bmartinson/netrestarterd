@@ -221,6 +221,8 @@ int main(int argc, char *argv[]) {
     } else {
       if ((!now_reachable && was_reachable) || dns_changed) {
         resetNetworkInterfaces();
+
+        was_reset = 1;
       }
     }
 
