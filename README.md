@@ -7,6 +7,15 @@ When using a work VPN, whenever an employee would put their computer to sleep wh
 ## Install
 All you need to install, uninstall, manually start/stop, or debug the tool can be driven off of the provided bash scripts. The binary will be compiled and installed using the `install.sh` script as will the appropriate plist files to setup the launch daemon.
 
+### The Basic Commands
+
+```sh
+# compile, install, and start the daemon
+sudo ./install.sh
+sudo ./start.sh
+```
+
+### More Commands
 ```sh
 # compile the source code, install the binary, configure the daemon
 sudo ./install.sh
