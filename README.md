@@ -32,7 +32,7 @@ sudo ./uninstall.sh
 # uninstall any existing installs and re-compile and run interactively
 sudo ./debug.sh
 
-# want to debug a previously compiled version without unisntalling
+# want to debug a previously compiled version without uninstalling
 sudo ./stop.sh # kill off any running daemons
 /usr/local/bin/netrestarterd --debug
 ```
