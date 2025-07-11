@@ -97,11 +97,11 @@ void resetNetworkInterfaces() {
 
   system(
     "for i in $(ifconfig | egrep -o '^[a-z0-9]+:' | sed 's/://'); do "
-    "ifconfig \"$i\" down; "
+    "sudo ifconfig \"$i\" down; "
     "done; "
-    "route -n flush; "
+    "sudo route -n flush; "
     "for i in $(ifconfig | egrep -o '^[a-z0-9]+:' | sed 's/://'); do "
-    "ifconfig \"$i\" up; "
+    "sudo ifconfig \"$i\" up; "
     "done"
   );
 }
