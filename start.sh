@@ -8,6 +8,9 @@ fi
 
 echo "Starting daemon..."
 
+# Kill any existing instances of the daemon
+sudo pkill -9 netrestarterd
+
 # Load the daemon
 launchctl load /Library/LaunchDaemons/com.bmartinson.netrestarterd.plist
 
